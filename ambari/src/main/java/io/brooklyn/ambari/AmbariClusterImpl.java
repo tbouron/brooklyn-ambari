@@ -54,6 +54,7 @@ import brooklyn.entity.proxying.EntitySpec;
 import brooklyn.event.SensorEvent;
 import brooklyn.event.SensorEventListener;
 import brooklyn.location.Location;
+import brooklyn.location.jclouds.JcloudsLocationConfig;
 import brooklyn.management.Task;
 import brooklyn.util.collections.MutableList;
 import brooklyn.util.collections.MutableMap;
@@ -106,6 +107,8 @@ public class AmbariClusterImpl extends BasicStartableImpl implements AmbariClust
     @Override
     public void init() {
         super.init();
+
+        config().set(JcloudsLocationConfig.IMAGE_CHOOSER, new AmbariImageChooser(getConfig(SUGGESTED_VERSION)).chooser());
 
         isHostGroupsDeployment = Iterables.size(getHostGroups()) > 0;
 
