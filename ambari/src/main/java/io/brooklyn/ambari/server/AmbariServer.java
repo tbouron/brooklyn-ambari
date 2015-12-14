@@ -116,10 +116,10 @@ public interface AmbariServer extends AmbariNode {
                                            @EffectorParam(name = "Service configuration") Map<Object, Object> configuration);
 
     @Effector(description = "Add new host to a hostgroup and install components")
-    public void addHostToHostGroup(@EffectorParam(name = "Blueprint Name") String blueprintName,
-                                      @EffectorParam(name = "Hostgroup Name") String hostgroupName,
-                                      @EffectorParam(name = "Hosts") List<String> hosts,
-                                      @EffectorParam(name = "Cluster Name") String cluster);
+    public void addHostsToHostGroup(@EffectorParam(name = "Blueprint Name") String blueprintName,
+                                    @EffectorParam(name = "Hostgroup Name") String hostgroupName,
+                                    @EffectorParam(name = "Hosts") List<String> hosts,
+                                    @EffectorParam(name = "Cluster Name") String cluster);
 
     @Effector(description = "Start a service on a cluster")
     public void startService(@EffectorParam(name = "Cluster name") String cluster,

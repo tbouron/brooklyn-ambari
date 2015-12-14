@@ -29,6 +29,8 @@ import org.apache.brooklyn.api.entity.EntitySpec;
 import org.apache.brooklyn.core.entity.Entities;
 import org.apache.brooklyn.entity.group.DynamicClusterImpl;
 import org.apache.brooklyn.entity.software.base.SameServerEntity;
+import org.apache.brooklyn.util.core.task.DynamicTasks;
+import org.apache.brooklyn.util.core.task.Tasks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,8 +80,16 @@ public class AmbariHostGroupImpl extends DynamicClusterImpl implements AmbariHos
 
         if (delta > 0) {
             EtcHostsManager.setHostsOnMachines(getAmbariCluster().getAmbariNodes(), getConfig(AmbariCluster.ETC_HOST_ADDRESS));
-            Iterable<AmbariAgent> ambariAgents = Iterables.filter(entities, AmbariAgent.class);
-            getAmbariCluster().addHostsToHostGroup(getDisplayName(), ambariAgents);
+            final Iterable<AmbariAgent> ambariAgents = Iterables.filter(entities, AmbariAgent.class);
+            DynamicTasks.queue(Tasks.builder()
+                    .displayName("add nodes to Ambari service")
+                    .body(new Runnable() {
+                        @Override
+                        public void run() {
+                            getAmbariCluster().addHostsToHostGroup(getDisplayName(), ambariAgents);
+                        }
+                    })
+                    .build());
         }
 
         return entities;

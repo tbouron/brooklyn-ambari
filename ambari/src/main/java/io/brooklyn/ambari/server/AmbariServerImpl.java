@@ -336,7 +336,7 @@ public class AmbariServerImpl extends SoftwareProcessImpl implements AmbariServe
     }
 
     @Override
-    public void addHostToHostGroup(final String blueprintName, final String hostgroupName, final List<String> hosts, final String cluster) {
+    public void addHostsToHostGroup(final String blueprintName, final String hostgroupName, final List<String> hosts, final String cluster) {
         Iterable<Map> hostGroupMapping = Iterables.transform(hosts, fqdnsToMaps(blueprintName, hostgroupName));
 
         Request request = restAdapter.create(HostEndpoint.class).addHosts(

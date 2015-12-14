@@ -47,6 +47,7 @@ import org.apache.brooklyn.entity.software.base.SoftwareProcess;
 import org.apache.brooklyn.entity.stock.BasicStartableImpl;
 import org.apache.brooklyn.util.collections.MutableList;
 import org.apache.brooklyn.util.collections.MutableMap;
+import org.apache.brooklyn.util.core.task.DynamicTasks;
 import org.apache.brooklyn.util.core.task.Tasks;
 import org.apache.brooklyn.util.guava.Maybe;
 import org.apache.commons.lang3.StringUtils;
@@ -241,7 +242,7 @@ public class AmbariClusterImpl extends BasicStartableImpl implements AmbariClust
         if (effector.isAbsentOrNull()) {
             throw new IllegalStateException("Cannot get the addHostsToHostGroup effector");
         }
-        Effectors.invocation(getMasterAmbariServer(), effector.get(), ImmutableMap.of(
+        getMasterAmbariServer().invoke(effector.get(), ImmutableMap.of(
                 "Blueprint Name", BLUEPRINT_NAME,
                 "Hostgroup Name", hostgroupName,
                 "Hosts", transform(hosts, mapAmbariNodeToFQDN),
